@@ -1,0 +1,1 @@
+# simple_fastapi_for_swagger
