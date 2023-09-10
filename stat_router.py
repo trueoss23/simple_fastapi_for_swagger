@@ -14,7 +14,7 @@ class Duration(Enum):
 
 class Stat(BaseModel):
     reach: int
-    engagement: float
+    engagement: str
     searched: int
     views: int
     subscriptions: int
@@ -24,7 +24,7 @@ class Stat(BaseModel):
 
 
 db = Stat(reach=100,
-          engagement=10.3,
+          engagement='+35%',
           searched=20,
           views=400,
           subscriptions=10,
@@ -34,7 +34,7 @@ db = Stat(reach=100,
 
 
 r = APIRouter(prefix='/stat')
-
+11111111111111111111111111111111
 
 @r.get('/get_all/acc/{user_id}/{duration}')
 async def read_all_stat_to_fix_duration(id: UUID,
