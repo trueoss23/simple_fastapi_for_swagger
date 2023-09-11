@@ -177,14 +177,14 @@ async def read_usubscribers(id: UUID,
     return db.unsubscriptions
 
 
-@r.post('post/{post_id}/follow_link_post')
+@r.post('/post/{post_id}/follow_link_post')
 async def hit_follow_link_post(post_id: int) -> None:
     """The function increases the number of users who followed the link from the post
     of the user who owns the post with 'post_id'(BigInt format)"""
     db.follow_link_post += 1
 
 
-@r.post('account/{user_id}/follow_link_profile')
+@r.post('/account/{user_id}/follow_link_profile')
 async def hit_follow_link_profile(user_id: UUID) -> None:
     """The function increases the number of users who followed the link from the profile
     of the user with 'user_id'(UUId format)"""
