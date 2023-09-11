@@ -6,4 +6,4 @@ WORKDIR ./app
 
 COPY . .
 
-CMD ["uvicorn", "main:app", "--host", "213.18.0.30", "--port", "8081"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8001", "--reload"]

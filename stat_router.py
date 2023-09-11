@@ -34,9 +34,9 @@ db = Stat(reach=100,
 
 
 r = APIRouter()
-11111111111111111111111111111111
 
-@r.get('/get_all/account/{user_id}/{duration}')
+
+@r.get('/account/{user_id}/all/{duration}')
 async def read_all_stat_to_fix_duration(id: UUID,
                                         duration: Duration) -> Stat:
     """"This function returns statistics on a user with 'user_id'(UUID format)
@@ -44,7 +44,7 @@ async def read_all_stat_to_fix_duration(id: UUID,
     return db
 
 
-@r.get('/get_all')
+@r.get('/account/{user_id}/all/')
 async def read_all_stat(id: UUID,
                         date_from: datetime,
                         date_to: datetime = datetime.utcnow()
@@ -54,7 +54,7 @@ async def read_all_stat(id: UUID,
     return db
 
 
-@r.get('/reach/account/{user_id}/{duration}')
+@r.get('/account/{user_id}/reach/{duration}')
 async def read_reach_to_fix_duration(id: UUID,
                                      duration: Duration) -> int:
     """"The function returns the number of unique users who viewed
@@ -63,7 +63,7 @@ async def read_reach_to_fix_duration(id: UUID,
     return db.reach
 
 
-@r.get('/reach/account/{user_id}')
+@r.get('/account/{user_id}/reach')
 async def read_reach(id: UUID,
                      date_from: datetime,
                      date_to: datetime = datetime.utcnow()) -> int:
@@ -73,7 +73,7 @@ async def read_reach(id: UUID,
     return db.reach
 
 
-@r.get('/engagement/account/{user_id}/{duration}')
+@r.get('/account/{user_id}/engagement/{duration}')
 async def read_engagement_to_fix_duration(id: UUID,
                                           duration: Duration) -> float:
     """"This function returns engagement statistics on a user with
@@ -84,7 +84,7 @@ async def read_engagement_to_fix_duration(id: UUID,
     return db.engagement
 
 
-@r.get('/engagement/account/{user_id}')
+@r.get('/account/{user_id}/engagement')
 async def read_engagement(id: UUID,
                           date_from: datetime,
                           date_to: datetime = datetime.utcnow(),
@@ -97,7 +97,7 @@ async def read_engagement(id: UUID,
     return db.engagement
 
 
-@r.get('/searched/account/{user_id}/{duration}')
+@r.get('/account/{user_id}/searched/{duration}')
 async def read_searched_to_fix_duration(id: UUID,
                                         duration: Duration) -> int:
     """The function returns the number of times a user with
@@ -106,7 +106,7 @@ async def read_searched_to_fix_duration(id: UUID,
     return db.searched
 
 
-@r.get('/searched/account/{user_id}')
+@r.get('/account/{user_id}/searched')
 async def read_searched(id: UUID,
                         date_from: datetime,
                         date_to: datetime = datetime.utcnow()) -> int:
@@ -116,7 +116,7 @@ async def read_searched(id: UUID,
     return db.searched
 
 
-@r.get('/views/account/{user_id}/{duration}')
+@r.get('/account/{user_id}/views/{duration}')
 async def read_views_to_fix_duration(id: UUID,
                                      duration: Duration) -> int:
     """The function returns the number of views of
@@ -125,7 +125,7 @@ async def read_views_to_fix_duration(id: UUID,
     return db.views
 
 
-@r.get('/views/account/{user_id}')
+@r.get('/account/{user_id}/views')
 async def read_views(id: UUID,
                      date_from: datetime,
                      date_to: datetime = datetime.utcnow()) -> int:
@@ -135,7 +135,7 @@ async def read_views(id: UUID,
     return db.views
 
 
-@r.get('/subscribers/account/{user_id}/{duration}')
+@r.get('/account/{user_id}/subscribers/{duration}')
 async def read_subscribers_to_fix_duration(id: UUID,
                                            duration: Duration) -> int:
     """the function returns the number of users who clicked
@@ -145,7 +145,7 @@ async def read_subscribers_to_fix_duration(id: UUID,
     return db.subscribers
 
 
-@r.get('/subscribers/account/{user_id}')
+@r.get('/account/{user_id}/subscribers')
 async def read_subscriberss(id: UUID,
                             date_from: datetime,
                             date_to: datetime = datetime.utcnow()) -> int:
@@ -156,7 +156,7 @@ async def read_subscriberss(id: UUID,
     return db.subscribers
 
 
-@r.get('/unsubscribers/account/{user_id}/{duration}')
+@r.get('/account/{user_id}/unsubscribers/{duration}')
 async def read_unsubscribers_to_fix_duration(id: UUID,
                                              duration: Duration) -> int:
     """the function returns the number of users who clicked
@@ -166,7 +166,7 @@ async def read_unsubscribers_to_fix_duration(id: UUID,
     return db.unsubscriptions
 
 
-@r.get('/unsubscribers/account/{user_id}')
+@r.get('/account/{user_id}/unsubscribers')
 async def read_usubscribers(id: UUID,
                             date_from: datetime,
                             date_to: datetime = datetime.utcnow()) -> int:
@@ -177,7 +177,7 @@ async def read_usubscribers(id: UUID,
     return db.unsubscriptions
 
 
-@r.post('post/{post_id}follow_link_post')
+@r.post('post/{post_id}/follow_link_post')
 async def hit_follow_link_post(post_id: int) -> None:
     """The function increases the number of users who followed the link from the post
     of the user who owns the post with 'post_id'(BigInt format)"""
