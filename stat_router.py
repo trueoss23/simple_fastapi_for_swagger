@@ -5,13 +5,6 @@ from enum import Enum
 from uuid import UUID
 
 
-class Duration(Enum):
-    DAY: str = 'day'
-    WEEK: str = 'week'
-    MONTH: str = 'mounth'
-    YEAR: str = 'year'
-
-
 class Stat(BaseModel):
     reach: int
     engagement: str
@@ -36,14 +29,6 @@ db = Stat(reach=100,
 r = APIRouter()
 
 
-@r.get('/account/{user_id}/all/{duration}')
-async def read_all_stat_to_fix_duration(id: UUID,
-                                        duration: Duration) -> Stat:
-    """"This function returns statistics on a user with 'user_id'(UUID format)
-      for the period day, week, month or year"""
-    return db
-
-
 @r.get('/account/{user_id}/all/')
 async def read_all_stat(id: UUID,
                         date_from: datetime,
@@ -54,15 +39,6 @@ async def read_all_stat(id: UUID,
     return db
 
 
-@r.get('/account/{user_id}/reach/{duration}')
-async def read_reach_to_fix_duration(id: UUID,
-                                     duration: Duration) -> int:
-    """"The function returns the number of unique users who viewed
-    at least one post by user with 'user_id'(UUID format)
-    for the period: day, week, month or year"""
-    return db.reach
-
-
 @r.get('/account/{user_id}/reach')
 async def read_reach(id: UUID,
                      date_from: datetime,
@@ -71,17 +47,6 @@ async def read_reach(id: UUID,
     at least one post by user with 'user_id'(UUID format)
     for the period from 'date_from' to 'date_to'"""
     return db.reach
-
-
-@r.get('/account/{user_id}/engagement/{duration}')
-async def read_engagement_to_fix_duration(id: UUID,
-                                          duration: Duration) -> float:
-    """"This function returns engagement statistics on a user with
-    'user_id'(UUID format) for the period day, week, month or year
-    Engagement = ((like + comments) / subscribers) * 100
-    subscribers in the moment!
-    like and comment for the period: day, week, month or year"""
-    return db.engagement
 
 
 @r.get('/account/{user_id}/engagement')
@@ -97,15 +62,6 @@ async def read_engagement(id: UUID,
     return db.engagement
 
 
-@r.get('/account/{user_id}/searched/{duration}')
-async def read_searched_to_fix_duration(id: UUID,
-                                        duration: Duration) -> int:
-    """The function returns the number of times a user with
-    'user_id'(UUID format) was displayed in search results, in 20 results
-    for the period: day, week, month or year"""
-    return db.searched
-
-
 @r.get('/account/{user_id}/searched')
 async def read_searched(id: UUID,
                         date_from: datetime,
@@ -114,15 +70,6 @@ async def read_searched(id: UUID,
     'user_id'(UUID format) was displayed in search results, in 20 results,
     for the period from 'date_from' to 'date_to'"""
     return db.searched
-
-
-@r.get('/account/{user_id}/views/{duration}')
-async def read_views_to_fix_duration(id: UUID,
-                                     duration: Duration) -> int:
-    """The function returns the number of views of
-    a user profile with 'user_id'(UUID format)
-    for the period: day, week, month or year"""
-    return db.views
 
 
 @r.get('/account/{user_id}/views')
@@ -135,16 +82,6 @@ async def read_views(id: UUID,
     return db.views
 
 
-@r.get('/account/{user_id}/subscribers/{duration}')
-async def read_subscribers_to_fix_duration(id: UUID,
-                                           duration: Duration) -> int:
-    """the function returns the number of users who clicked
-    'Subscribe'
-    in the profile of the user with 'user_id'(UUID format)
-    for the period: day, week, month or year"""
-    return db.subscribers
-
-
 @r.get('/account/{user_id}/subscribers')
 async def read_subscriberss(id: UUID,
                             date_from: datetime,
@@ -154,16 +91,6 @@ async def read_subscriberss(id: UUID,
     in the profile of the user with 'user_id'(UUID format)
     for the period from 'date_from' to 'date_to'"""
     return db.subscribers
-
-
-@r.get('/account/{user_id}/unsubscribers/{duration}')
-async def read_unsubscribers_to_fix_duration(id: UUID,
-                                             duration: Duration) -> int:
-    """the function returns the number of users who clicked
-    'You are subscribed'
-    in the profile of the user with 'user_id'(UUID format)
-    for the period: day, week, month or year"""
-    return db.unsubscriptions
 
 
 @r.get('/account/{user_id}/unsubscribers')
