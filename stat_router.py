@@ -6,7 +6,7 @@ from uuid import UUID
 
 class Stat(BaseModel):
     profile_reach: int
-    profile_engagement: str
+    profile_engagement: float
     profile_searched: int
     profile_views: int
     profile_subscriptions: int
