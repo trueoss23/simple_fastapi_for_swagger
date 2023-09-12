@@ -1,30 +1,39 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
 from datetime import datetime
-from enum import Enum
 from uuid import UUID
 
 
 class Stat(BaseModel):
-    reach: int
-    engagement: str
-    searched: int
-    views: int
-    subscriptions: int
-    unsubscriptions: int
-    follow_link_post: int
-    follow_link_profile: int
+    profile_reach: int
+    profile_engagement: str
+    profile_searched: int
+    profile_views: int
+    profile_subscriptions: int
+    profile_unsubscriptions: int
+    post_follow_link_post: int
+    profile_follow_link_profile: int
 
 
-db = Stat(reach=100,
-          engagement='+35%',
-          searched=20,
-          views=400,
-          subscriptions=10,
-          unsubscriptions=30,
-          follow_link_post=10,
-          follow_link_profile=100,)
+new = Stat(profile_reach=100,
+           profile_engagement=35,
+           profile_searched=20,
+           profile_views=400,
+           profile_subscriptions=10,
+           profile_unsubscriptions=30,
+           post_follow_link_post=10,
+           profile_follow_link_profile=100,)
 
+old = Stat(profile_reach=10,
+           profile_engagement=5,
+           profile_searched=20,
+           profile_views=400,
+           profile_subscriptions=10,
+           profile_unsubscriptions=30,
+           post_follow_link_post=10,
+           profile_follow_link_profile=100,)
+
+diff_in_percent = 35
 
 r = APIRouter()
 
@@ -33,56 +42,58 @@ r = APIRouter()
 async def read_all_stat(id: UUID,
                         date_from: datetime,
                         date_to: datetime = datetime.utcnow()
-                        ) -> Stat:
+                        ):
     """"This function returns statistics on a user with 'user_id'(UUID format)
       for the period from 'date_from' to 'date_to'"""
-    return db
+    return {'new': new,
+            'old': old,
+            'diff_in_percent': diff_in_percent}
 
 
-@r.get('/account/{user_id}/reach')
+@r.get('/account/{user_id}/profile_reach')
 async def read_reach(id: UUID,
                      date_from: datetime,
                      date_to: datetime = datetime.utcnow()) -> int:
     """"The function returns the number of unique users who viewed
     at least one post by user with 'user_id'(UUID format)
     for the period from 'date_from' to 'date_to'"""
-    return db.reach
+    return new.profile_reach
 
 
-@r.get('/account/{user_id}/engagement')
+@r.get('/account/{user_id}/profile_engagement')
 async def read_engagement(id: UUID,
                           date_from: datetime,
                           date_to: datetime = datetime.utcnow(),
                           ) -> float:
-    """"This function returns engagement statistics on a user with
+    """"This function returns profile_engagement statistics on a user with
     'user_id'(UUID format) for the period day, week, month or year
     Engagement = ((like + comments) / subscribers) * 100
     subscribers in the moment!
     like and comment for the period from 'date_from' to 'date_to'"""
-    return db.engagement
+    return new.profile_engagement
 
 
-@r.get('/account/{user_id}/searched')
+@r.get('/account/{user_id}/profile_searched')
 async def read_searched(id: UUID,
                         date_from: datetime,
                         date_to: datetime = datetime.utcnow()) -> int:
     """The function returns the number of times a user with
     'user_id'(UUID format) was displayed in search results, in 20 results,
     for the period from 'date_from' to 'date_to'"""
-    return db.searched
+    return new.profile_searched
 
 
-@r.get('/account/{user_id}/views')
+@r.get('/account/{user_id}/profile_views')
 async def read_views(id: UUID,
                      date_from: datetime,
                      date_to: datetime = datetime.utcnow()) -> int:
-    """The function returns the number of views of
+    """The function returns the number of profile_views of
     a user profile with 'user_id'(UUID format)
     for the period from 'date_from' to 'date_to'"""
-    return db.views
+    return new.profile_views
 
 
-@r.get('/account/{user_id}/subscribers')
+@r.get('/account/{user_id}/profile_subscribers')
 async def read_subscriberss(id: UUID,
                             date_from: datetime,
                             date_to: datetime = datetime.utcnow()) -> int:
@@ -90,10 +101,10 @@ async def read_subscriberss(id: UUID,
     'Subscribe'
     in the profile of the user with 'user_id'(UUID format)
     for the period from 'date_from' to 'date_to'"""
-    return db.subscribers
+    return new.profile_subscribers
 
 
-@r.get('/account/{user_id}/unsubscribers')
+@r.get('/account/{user_id}/profile_unsubscribers')
 async def read_usubscribers(id: UUID,
                             date_from: datetime,
                             date_to: datetime = datetime.utcnow()) -> int:
@@ -101,18 +112,18 @@ async def read_usubscribers(id: UUID,
     'You are subscribed'
     in the profile of the user with 'user_id'(UUID format)
     for the period from 'date_from' to 'date_to'"""
-    return db.unsubscriptions
+    return new.profile_unsubscriptions
 
 
-@r.post('/post/{post_id}/follow_link_post')
+@r.post('/post/{post_id}/post_follow_link_post')
 async def hit_follow_link_post(post_id: int) -> None:
     """The function increases the number of users who followed the link from the post
     of the user who owns the post with 'post_id'(BigInt format)"""
-    db.follow_link_post += 1
+    new.post_follow_link_post += 1
 
 
-@r.post('/account/{user_id}/follow_link_profile')
+@r.post('/account/{user_id}/profile_follow_link_profile')
 async def hit_follow_link_profile(user_id: UUID) -> None:
     """The function increases the number of users who followed the link from the profile
     of the user with 'user_id'(UUId format)"""
-    db.follow_link_profile += 1
+    new.profile_follow_link_profile += 1
