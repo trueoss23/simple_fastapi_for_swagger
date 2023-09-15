@@ -129,7 +129,7 @@ async def readFollowsLinkFromPosts(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcd
             'oldFollowsLinkFromPosts': old.followsLinkFromPosts}
 
 
-@r.get('/account/{userId}/followLinkFromProfile')
+@r.get('/account/{userId}/followsLinkFromProfile')
 async def readFollowsLinkFromProfile(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                                      start: datetime = datetime.utcnow(),
                                      end: datetime = datetime.utcnow()):
@@ -140,17 +140,17 @@ async def readFollowsLinkFromProfile(id: UUID = '006e40e7-8749-44d1-90bf-1f9027d
             'oldFollowsLinkFromProfile': old.followsLinkFromProfile}
 
 
-@r.post('/post/{postId}/followLinkFromPost')
+@r.post('/post/{postId}/followsLinkFromPost')
 async def hit_follow_link_post(post_id: int):
     """The function increases the number of users who followed the link from the post
     of the user who owns the post with 'post_id'(BigInt format)"""
-    new.FollowLinkFromPost += 1
+    new.followsLinkFromPosts += 1
     return
 
 
-@r.post('/account/{userId}/followLinkFromProfile')
+@r.post('/account/{userId}/followsLinkFromProfile')
 async def hit_follow_link_profile(userId: UUID):
     """The function increases the number of users who followed the link from the profile
     of the user with 'userId'(UUId format)"""
-    new.FollowLinkFromProfile += 1
+    new.followsLinkFromProfile += 1
     return
