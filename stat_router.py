@@ -118,7 +118,7 @@ async def read_unsubscribers(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
             'oldProfileUnsubscriberss': old.profileUnsubscribers}
 
 
-@r.get('/account/{userId}/FollowsLinkFromPosts')
+@r.get('/account/{userId}/followsLinkFromPosts')
 async def readFollowsLinkFromPosts(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                                    start: datetime = datetime.utcnow(),
                                    end: datetime = datetime.utcnow()):
@@ -129,7 +129,7 @@ async def readFollowsLinkFromPosts(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcd
             'oldFollowsLinkFromPosts': old.followsLinkFromPosts}
 
 
-@r.get('/account/{userId}/FollowLinkFromProfile')
+@r.get('/account/{userId}/followLinkFromProfile')
 async def readFollowsLinkFromProfile(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                                      start: datetime = datetime.utcnow(),
                                      end: datetime = datetime.utcnow()):
@@ -140,7 +140,7 @@ async def readFollowsLinkFromProfile(id: UUID = '006e40e7-8749-44d1-90bf-1f9027d
             'oldFollowsLinkFromProfile': old.followsLinkFromProfile}
 
 
-@r.post('/post/{postId}/FollowLinkFromPost')
+@r.post('/post/{postId}/followLinkFromPost')
 async def hit_follow_link_post(post_id: int):
     """The function increases the number of users who followed the link from the post
     of the user who owns the post with 'post_id'(BigInt format)"""
@@ -148,7 +148,7 @@ async def hit_follow_link_post(post_id: int):
     return
 
 
-@r.post('/account/{userId}/FollowLinkFromProfile')
+@r.post('/account/{userId}/followLinkFromProfile')
 async def hit_follow_link_profile(userId: UUID):
     """The function increases the number of users who followed the link from the profile
     of the user with 'userId'(UUId format)"""
