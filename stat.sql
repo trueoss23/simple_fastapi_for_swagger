@@ -50,14 +50,14 @@ WHERE ug.user_uid = '94414adb-f84a-499a-b252-b3beb6c5c5cf'  AND ug.created_at BE
 -- 50 мс
 SELECT COUNT(e.id) as cnt 
 FROM feed.events e 
-INNER JOIN feed.posts p on p.id = e.post_id 
-WHERE e.event_type = 2 AND p.author_id = UUID_TO_BIN('94414adb-f84a-499a-b252-b3beb6c5c5cf') AND
+INNER JOIN auth.users u on  UUID_TO_BIN(u.id) = e.profile_id
+WHERE e.event_type = 2 AND e.profile_id = UUID_TO_BIN('0643e689-8ac9-4351-9545-3523322bc536') AND
     e.created_at BETWEEN '2023-01-01 00:00:00'  AND '2023-09-01 00:00:00';
 
 -- ✅6.Отписки
 -- 50 мс
-    SELECT COUNT(e.id) as cnt
+SELECT COUNT(e.id) as cnt 
 FROM feed.events e 
-INNER JOIN feed.posts p on p.id = e.post_id 
-WHERE e.event_type = 3 AND p.author_id = UUID_TO_BIN('94414adb-f84a-499a-b252-b3beb6c5c5cf') AND
+INNER JOIN auth.users u on  UUID_TO_BIN(u.id) = e.profile_id
+WHERE e.event_type = 3 AND e.profile_id = UUID_TO_BIN('0643e689-8ac9-4351-9545-3523322bc536') AND
     e.created_at BETWEEN '2023-01-01 00:00:00'  AND '2023-09-01 00:00:00';
