@@ -37,34 +37,34 @@ old = Stat(profileReach=0,
 r = APIRouter()
 
 
-@r.get('/profile/{userId}/allStats/')
+@r.get('/profile/{userID}/allStats/')
 async def readAllStat(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                       start: datetime = datetime.utcnow(),
                       end: datetime = datetime.utcnow()):
-    """"This function returns statistics on a user with 'userId'(UUID format)
+    """"This function returns statistics on a user with 'userID'(UUID format)
       for the period from 'start' to 'end'"""
     return {'new': new,
             'old': old}
 
 
-@r.get('/profile/{userId}/reach')
+@r.get('/profile/{userID}/reach')
 async def read_reach(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                      start: datetime = datetime.utcnow(),
                      end: datetime = datetime.utcnow()):
     """"returns the number of unique users who viewed
-    at least one post by user with 'userId'(UUID format)
+    at least one post by user with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
     return {'newProfileReach': new.profileReach,
             'oldProfileReach': old.profileReach}
 
 
-@r.get('/profile/{userId}/engagement')
+@r.get('/profile/{userID}/engagement')
 async def read_engagement(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                           start: datetime = datetime.utcnow(),
                           end: datetime = datetime.utcnow(),
                           ):
     """"This function returns profileEngagement statistics on a user with
-    'userId'(UUID format) for the period day, week, month or year
+    'userID'(UUID format) for the period day, week, month or year
     Engagement = ((like + comments) / subscribers) * 100
     subscribers in the moment!
     like and comment for the period from 'start' to 'end'"""
@@ -72,85 +72,85 @@ async def read_engagement(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
             'oldProfileEngagement': old.profileEngagement}
 
 
-@r.get('/profile/{userId}/searched')
+@r.get('/profile/{userID}/searched')
 async def read_searched(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                         start: datetime = datetime.utcnow(),
                         end: datetime = datetime.utcnow()):
     """returns the number of times a user with
-    'userId'(UUID format) was displayed in search results, in 20 results,
+    'userID'(UUID format) was displayed in search results, in 20 results,
     for the period from 'start' to 'end'"""
     return {'newProfileSearched': new.profileSearched,
             'oldProfileSearched': old.profileSearched}
 
 
-@r.get('/profile/{userId}/views')
+@r.get('/profile/{userID}/views')
 async def read_views(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                      start: datetime = datetime.utcnow(),
                      end: datetime = datetime.utcnow()):
     """returns the number of profileViews of
-    a user profile with 'userId'(UUID format)
+    a user profile with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
     return {'newProfileViews': new.profileViews,
             'oldProfileViews': old.profileViews}
 
 
-@r.get('/profile/{userId}/subscribers')
+@r.get('/profile/{userID}/subscribers')
 async def read_subscribers(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                            start: datetime = datetime.utcnow(),
                            end: datetime = datetime.utcnow()):
     """returns the number of users who clicked
     'Subscribe'
-    in the profile of the user with 'userId'(UUID format)
+    in the profile of the user with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
     return {'newProfileSubscribers': new.profileSubscribers,
             'oldProfileSubscribers': old.profileSubscribers}
 
 
-@r.get('/profile/{userId}/unsubscribers')
+@r.get('/profile/{userID}/unsubscribers')
 async def read_unsubscribers(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                              start: datetime = datetime.utcnow(),
                              end: datetime = datetime.utcnow()):
     """returns the number of users who clicked
     'You are subscribed'
-    in the profile of the user with 'userId'(UUID format)
+    in the profile of the user with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
     return {'newProfileUnsubscribers': new.profileUnsubscribers,
             'oldProfileUnsubscriberss': old.profileUnsubscribers}
 
 
-@r.get('/profile/{userId}/followsLinkFromPosts')
+@r.get('/profile/{userID}/followsLinkFromPosts')
 async def readFollowsLinkFromPosts(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                                    start: datetime = datetime.utcnow(),
                                    end: datetime = datetime.utcnow()):
     """returns the number of users who clicked
-    links from posts in the profile of the user with 'userId'(UUID format)
+    links from posts in the profile of the user with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
     return {'newFollowsLinkFromPostss': new.followsLinkFromPosts,
             'oldFollowsLinkFromPosts': old.followsLinkFromPosts}
 
 
-@r.get('/profile/{userId}/followsLinkFromProfile')
+@r.get('/profile/{userID}/followsLinkFromProfile')
 async def readFollowsLinkFromProfile(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                                      start: datetime = datetime.utcnow(),
                                      end: datetime = datetime.utcnow()):
     """returns the number of users who clicked
-    links from profile of the user with 'userId'(UUID format)
+    links from profile of the user with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
     return {'newFollowsLinkFromProfile': new.followsLinkFromProfile,
             'oldFollowsLinkFromProfile': old.followsLinkFromProfile}
 
 
-@r.post('/post/{postId}/followsLinkFromPost')
-async def hit_follow_link_post(post_id: int):
-    """increases the number of users who followed the link from the post
-    of the user who owns the post with 'post_id'(BigInt format)"""
+@r.post('/post/followsLinkFromPost')
+async def createFollowsLinkFromPost(profileID: UUID, visitorID: UUID):
+    """adds to the database a user with an visitorID(UUID format)
+    who followed the link from the post of the user with an profileID(UUID format)"""
     new.followsLinkFromPosts += 1
     return
 
 
-@r.post('/profile/{userId}/followsLinkFromProfile')
-async def hit_follow_link_profile(userId: UUID):
-    """increases the number of users who followed the link from the profile
-    of the user with 'userId'(UUId format)"""
+@r.post('/profile/followsLinkFromProfile')
+async def createFollowsLinkFromProfile(profileID: UUID, visitorID: UUID):
+    """adds to the database a user with an visitorID(UUID format)
+    who followed the link from the profile of the user with an profileID(UUID format)"""
     new.followsLinkFromProfile += 1
     return
