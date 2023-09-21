@@ -4,9 +4,22 @@ from datetime import datetime
 from uuid import UUID
 
 
-class Stat(BaseModel):
+
+class StatPoint(BaseModel):
+    profileReach: int
+    profileEngagement: float
+    profileViews: int
+    profileSubscribers: int
+    profileUnsubscribers: int
+    followsLinkFromPosts: int
+    followsLinkFromProfile: int
+    profileClicksFromSubscribers: int
+    profileClikcsFromSubscriptions: int
+    profileClicksFromKvad: int = None
+    profileSearchedInHashtag: int
+    profileSearched: int
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "profileReach": 5,
                 "profileEngagement": 35.4,
@@ -22,27 +35,16 @@ class Stat(BaseModel):
                 "profileSearched": 11,
             }
         }
-        # orm_mode = True
-        # use_enum_values = True
-        # schema_extra = {
-        #     "example": {
-        #         "profileReach": 5,
-        #         "profileEngagement": 35.4,
-        #         "profileViews": 2,
-        #         "profileSubscribers": 1,
-        #         "profileUnsubscribers": 3,
-        #         "followsLinkFromPosts": 4,
-        #         "followsLinkFromProfile": 0,
-        #         "profileClicksFromSubscribers": 0,
-        #         "profileClikcsFromSubscriptions": 0,
-        #         "profileClicksFromKvad": 1,
-        #         "profileSearchedInHashtag": 700,
-        #         "profileSearched": 11,
-        #     }
-        # }
 
 
-new = Stat(profileReach=100,
+
+
+class Stat(BaseModel):
+     new: StatPoint
+     old: StatPoint 
+
+
+new = StatPoint(profileReach=100,
            profileEngagement=35.4,
            profileSearcheded=0,
            profileViews=400,
@@ -56,7 +58,7 @@ new = Stat(profileReach=100,
            profileSearchedInHashtag=3,
            profileSearched=0,)
 
-old = Stat(profileReach=0,
+old = StatPoint(profileReach=0,
            profileEngagement=12.4,
            profileSearcheded=20,
            profileViews=400,
@@ -77,7 +79,7 @@ r = APIRouter()
 @r.get('/profile/{userID}/allStats/')
 async def readAllStat(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                       start: datetime = datetime.utcnow(),
-                      end: datetime = datetime.utcnow()) -> dict:
+                      end: datetime = datetime.utcnow()) -> Stat:
     """"This function returns statistics on a user with 'userID'(UUID format)
       for the period from 'start' to 'end'"""
     return {'new': new,
