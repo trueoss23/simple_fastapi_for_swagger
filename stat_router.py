@@ -4,7 +4,6 @@ from datetime import datetime
 from uuid import UUID
 
 
-
 class StatPoint(BaseModel):
     profileReach: int
     profileEngagement: float
@@ -18,6 +17,7 @@ class StatPoint(BaseModel):
     profileClicksFromKvad: int = None
     profileSearchedInHashtag: int
     profileSearched: int
+
     class Config:
         json_schema_extra = {
             "example": {
@@ -37,11 +37,9 @@ class StatPoint(BaseModel):
         }
 
 
-
-
 class Stat(BaseModel):
-     new: StatPoint
-     old: StatPoint 
+    new: StatPoint
+    old: StatPoint
 
 
 new = StatPoint(profileReach=100,
@@ -51,7 +49,7 @@ new = StatPoint(profileReach=100,
            profileSubscribers=10,
            profileUnsubscribers=30,
            followsLinkFromPosts=10,
-           followsLinkFromProfile=100,
+           followsLinkFromProfile=100,  
            profileClicksFromSubscribers=2,
            profileClikcsFromSubscriptions=3,
            profileClicksFromKvad=1,
@@ -239,7 +237,7 @@ async def createClickFromSubscribers(profileID: UUID, clickerID: UUID):
     return
 
 
-@r.post('/rofile/click/subscriptions')
+@r.post('/profile/click/subscriptions')
 async def createClickFromSubscriptions(profileID: UUID, clickerID: UUID):
     """adds to the database a clickerID(UUID format) who clicked on a profile
     with an profileID(UUID format) in their Subscruptions
