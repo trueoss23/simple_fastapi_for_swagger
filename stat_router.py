@@ -4,19 +4,47 @@ from datetime import datetime
 from uuid import UUID
 
 
+class RequestBodyWithClicker(BaseModel):
+	profileID: UUID
+	clickerID: UUID
+
+	class Config:
+		json_schema_extra = {
+            "example": {
+                "profileID": "4b963742-99b2-494c-bdd6-d6a4176e954a",
+                "clickerID": "5f963742-99b2-494c-bdd9-d6a4176e954a",
+            }
+        }
+
+
+class RequestBodyForSearch(BaseModel):
+	profileID: UUID
+	clickerID: UUID
+	searchValue: str
+
+	class Config:
+		json_schema_extra = {
+            "example": {
+                "profileID": "4b963742-99b2-494c-bdd6-d6a4176e954a",
+                "clickerID": "5f963742-99b2-494c-bdd9-d6a4176e954a",
+                "searchValue": "psina",
+            }
+        }
+
+
 class StatPoint(BaseModel):
     profileReach: int
     profileEngagement: float
     profileViews: int
     profileSubscribers: int
     profileUnsubscribers: int
-    followsLinkFromPosts: int
+    followsLinkFromPost: int
     followsLinkFromProfile: int
-    profileClicksFromSubscribers: int
-    profileClikcsFromSubscriptions: int
-    profileClicksFromKvad: int = None
-    profileSearchedInHashtag: int
-    profileSearched: int
+    clicksFromSubscribers: int
+    clikcsFromSubscriptions: int
+    clicksFromKvad: int = None
+    searchedInHashtag: int
+    searched: int
 
     class Config:
         json_schema_extra = {
@@ -26,49 +54,49 @@ class StatPoint(BaseModel):
                 "profileViews": 2,
                 "profileSubscribers": 1,
                 "profileUnsubscribers": 3,
-                "followsLinkFromPosts": 4,
+                "followsLinkFromPost": 4,
                 "followsLinkFromProfile": 0,
-                "profileClicksFromSubscribers": 0,
-                "profileClikcsFromSubscriptions": 0,
-                "profileClicksFromKvad": 1,
-                "profileSearchedInHashtag": 700,
-                "profileSearched": 11,
+                "clicksFromSubscribers": 0,
+                "clikcsFromSubscriptions": 0,
+                "clicksFromKvad": 1,
+                "searchedInHashtag": 700,
+                "searched": 11,
             }
         }
 
 
 class Stat(BaseModel):
-    new: StatPoint
-    old: StatPoint
+    Curr: StatPoint
+    Prev: StatPoint
 
 
-new = StatPoint(profileReach=100,
+Curr = StatPoint(profileReach=100,
            profileEngagement=35.4,
-           profileSearcheded=0,
+           searcheded=0,
            profileViews=400,
            profileSubscribers=10,
            profileUnsubscribers=30,
-           followsLinkFromPosts=10,
-           followsLinkFromProfile=100,  
-           profileClicksFromSubscribers=2,
-           profileClikcsFromSubscriptions=3,
-           profileClicksFromKvad=1,
-           profileSearchedInHashtag=3,
-           profileSearched=0,)
+           followsLinkFromPost=10,
+           followsLinkFromProfile=100,
+           clicksFromSubscribers=2,
+           clikcsFromSubscriptions=3,
+           clicksFromKvad=1,
+           searchedInHashtag=3,
+           searched=0,)
 
-old = StatPoint(profileReach=0,
+Prev = StatPoint(profileReach=0,
            profileEngagement=12.4,
-           profileSearcheded=20,
+           searcheded=20,
            profileViews=400,
            profileSubscribers=10,
            profileUnsubscribers=0,
-           followsLinkFromPosts=0,
+           followsLinkFromPost=0,
            followsLinkFromProfile=100,
-           profileClicksFromSubscribers=20,
-           profileClikcsFromSubscriptions=33,
-           profileClicksFromKvad=0,
-           profileSearchedInHashtag=31,
-           profileSearched=100,)
+           clicksFromSubscribers=20,
+           clikcsFromSubscriptions=33,
+           clicksFromKvad=0,
+           searchedInHashtag=31,
+           searched=100,)
 
 
 r = APIRouter()
@@ -80,8 +108,8 @@ async def readAllStat(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                       end: datetime = datetime.utcnow()) -> Stat:
     """"This function returns statistics on a user with 'userID'(UUID format)
       for the period from 'start' to 'end'"""
-    return {'new': new,
-            'old': old}
+    return {'Curr': Curr,
+            'Prev': Prev}
 
 
 @r.get('/profile/{userID}/reach')
@@ -91,8 +119,8 @@ async def read_reach(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
     """"returns the number of unique users who viewed
     at least one post by user with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
-    return {'newProfileReach': new.profileReach,
-            'oldProfileReach': old.profileReach}
+    return {'CurrReach': Curr.profileReach,
+            'PrevReach': Prev.profileReach}
 
 
 @r.get('/profile/{userID}/engagement')
@@ -105,8 +133,8 @@ async def read_engagement(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
     Engagement = ((like + comments) / subscribers) * 100
     subscribers in the moment!
     like and comment for the period from 'start' to 'end'"""
-    return {'newProfileEngagement': new.profileEngagement,
-            'oldProfileEngagement': old.profileEngagement}
+    return {'CurrEngagement': Curr.profileEngagement,
+            'PrevEngagement': Prev.profileEngagement}
 
 
 @r.get('/profile/{userID}/views')
@@ -116,8 +144,8 @@ async def read_views(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
     """returns the number of profileViews of
     a user profile with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
-    return {'newProfileViews': new.profileViews,
-            'oldProfileViews': old.profileViews}
+    return {'CurrViews': Curr.profileViews,
+            'PrevViews': Prev.profileViews}
 
 
 @r.get('/profile/{userID}/subscribers')
@@ -128,8 +156,8 @@ async def read_subscribers(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
     'Subscribe'
     in the profile of the user with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
-    return {'newProfileSubscribers': new.profileSubscribers,
-            'oldProfileSubscribers': old.profileSubscribers}
+    return {'CurrSubscribers': Curr.profileSubscribers,
+            'PrevSubscribers': Prev.profileSubscribers}
 
 
 @r.get('/profile/{userID}/unsubscribers')
@@ -140,8 +168,8 @@ async def read_unsubscribers(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
     'You are subscribed'
     in the profile of the user with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
-    return {'newProfileUnsubscribers': new.profileUnsubscribers,
-            'oldProfileUnsubscriberss': old.profileUnsubscribers}
+    return {'CurrUnsubscribers': Curr.profileUnsubscribers,
+            'PrevUnsubscriberss': Prev.profileUnsubscribers}
 
 
 @r.get('/profile/{userID}/followsLinkFromPosts')
@@ -151,8 +179,8 @@ async def readFollowsLinkFromPosts(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcd
     """returns the number of users who clicked
     links from posts in the profile of the user with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
-    return {'newFollowsLinkFromPostss': new.followsLinkFromPosts,
-            'oldFollowsLinkFromPosts': old.followsLinkFromPosts}
+    return {'CurrFollowsLinkFromPosts': Curr.followsLinkFromPost,
+            'PrevFollowsLinkFromPosts': Prev.followsLinkFromPost}
 
 
 @r.get('/profile/{userID}/followsLinkFromProfile')
@@ -162,32 +190,32 @@ async def readFollowsLinkFromProfile(id: UUID = '006e40e7-8749-44d1-90bf-1f9027d
     """returns the number of users who clicked
     links from profile of the user with 'userID'(UUID format)
     for the period from 'start' to 'end'"""
-    return {'newFollowsLinkFromProfile': new.followsLinkFromProfile,
-            'oldFollowsLinkFromProfile': old.followsLinkFromProfile}
+    return {'CurrFollowsLinkFromProfile': Curr.followsLinkFromProfile,
+            'PrevFollowsLinkFromProfile': Prev.followsLinkFromProfile}
 
 
-@r.get('/profile/{userID}/profileClicksFromSubscribers')
+@r.get('/profile/{userID}/clicksFromSubscribers')
 async def readClickFromSubscribers(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                                      start: datetime = datetime.utcnow(),
                                      end: datetime = datetime.utcnow()):
-    return {'newProfileClickFromSubscribers': new.profileClicksFromSubscribers,
-            'oldProfileClickFromSubscribers': old.profileClicksFromSubscribers}
+    return {'CurrClicksSubscribers': Curr.clicksFromSubscribers,
+            'PrevClicksSubscribers': Prev.clicksFromSubscribers}
 
 
-@r.get('/profile/{userID}/profileClickFromSubscriptions')
+@r.get('/profile/{userID}/profileClicksFromSubscriptions')
 async def readClickFromSubscriptions(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                                      start: datetime = datetime.utcnow(),
                                      end: datetime = datetime.utcnow()):
-    return {'newProfileClickFromSubscriptions': new.profileClikcsFromSubscriptions,
-            'oldProfileClickFromSubscriptions': old.profileClikcsFromSubscriptions}
+    return {'CurrClicksSubscriptions': Curr.clikcsFromSubscriptions,
+            'PrevClicksSubscriptions': Prev.clikcsFromSubscriptions}
 
 
-@r.get('/profile/{userID}/profileClicksFromKvad')
+@r.get('/profile/{userID}/clicksFromKvad')
 async def readClickFromKvad(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                             start: datetime = datetime.utcnow(),
                             end: datetime = datetime.utcnow()):
-    return {'newProfileClickFromKvad': new.profileClicksFromKvad,
-            'oldProfileClickFromKvad': old.profileClicksFromKvad}
+    return {'CurrClicksKvad': Curr.clicksFromKvad,
+            'PrevClicksKvad': Prev.clicksFromKvad}
 
 
 @r.get('/profile/{userID}/searched')
@@ -197,8 +225,8 @@ async def read_searched(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
     """returns the number of times a user with
     'userID'(UUID format) was displayed in search results, in 20 results,
     for the period from 'start' to 'end'"""
-    return {'newProfileSearched': new.profileSearched,
-            'oldProfileSearched': old.profileSearched}
+    return {'CurrSearched': Curr.searched,
+            'PrevSearched': Prev.searched}
 
 
 @r.get('/profile/{userID}/searchedInHashtag')
@@ -208,15 +236,15 @@ async def read_searchedInHashtag(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd0
     """returns the number of times a user with
     'userID'(UUID format) was displayed in search results, in 20 results,
     for the period from 'start' to 'end'"""
-    return {'newProfileSearchedInHashtag': new.profileSearchedInHashtag,
-            'oldProfileSearchedInHashtag': old.profileSearchedInHashtag}
+    return {'CurrSearchedInHashtag': Curr.searchedInHashtag,
+            'PrevSearchedInHashtag': Prev.searchedInHashtag}
 
 
 @r.post('/post/followsLinkFromPost')
 async def createFollowsLinkFromPost(profileID: UUID, visitorID: UUID):
     """adds to the database a user with an visitorID(UUID format)
     who followed the link from the post of the user with an profileID(UUID format)"""
-    new.followsLinkFromPosts += 1
+    Curr.followsLinkFromPost += 1
     return
 
 
@@ -224,7 +252,7 @@ async def createFollowsLinkFromPost(profileID: UUID, visitorID: UUID):
 async def createFollowsLinkFromProfile(profileID: UUID, visitorID: UUID):
     """adds to the database a user with an visitorID(UUID format)
     who followed the link from the profile of the user with an profileID(UUID format)"""
-    new.followsLinkFromProfile += 1
+    Curr.followsLinkFromProfile += 1
     return
 
 
@@ -233,7 +261,7 @@ async def createClickFromSubscribers(profileID: UUID, clickerID: UUID):
     """adds to the database a clickerID(UUID format) who clicked on a profile
     with an profileID(UUID format) in their subscribers
     """
-    new.profileClicksFromSubscribers += 1
+    Curr.clicksFromSubscribers += 1
     return
 
 
@@ -242,7 +270,7 @@ async def createClickFromSubscriptions(profileID: UUID, clickerID: UUID):
     """adds to the database a clickerID(UUID format) who clicked on a profile
     with an profileID(UUID format) in their Subscruptions
     """
-    new.profileClikcsFromSubscriptions += 1
+    Curr.clikcsFromSubscriptions += 1
     return
 
 
@@ -251,7 +279,7 @@ async def createClickFromKvad(profileID: UUID, clickerID: UUID):
     """adds to the database a clickerID(UUID format) who clicked on a profile
     with an profileID(UUID format) in kvad
     """
-    new.profileClicksFromKvad += 1
+    Curr.clicksFromKvad += 1
     return
 
 
@@ -262,7 +290,7 @@ async def createProfileSearch(profileIDList: list[UUID],
     """adds to the database a user with an ID who was looking for
     a list of profiles with an ID(UUID format) in searchValue
     """
-    new.profileSearched += 1
+    Curr.searched += 1
     return
 
 
@@ -273,5 +301,5 @@ async def createProfileSearchInHashtag(profileIDList: list[UUID],
     """adds to the database a user with an ID who was looking for
     a list of profiles with an ID(UUID format) in hashtag
     """
-    new.profileSearchedInHashtag += 1
+    Curr.searchedInHashtag += 1
     return
