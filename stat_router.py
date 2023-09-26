@@ -284,7 +284,7 @@ async def createClickFromKvad(profileID: UUID, clickerID: UUID):
 
 
 @r.post('/profile/search')
-async def createProfileSearch(profileIDList: list[UUID],
+async def createProfileSearch(profileIDList: list[RequestBodyForSearch],
                               finderID: UUID,
                               searchValue: str):
     """adds to the database a user with an ID who was looking for
@@ -295,7 +295,7 @@ async def createProfileSearch(profileIDList: list[UUID],
 
 
 @r.post('/profile/searchInHashtag')
-async def createProfileSearchInHashtag(profileIDList: list[UUID],
+async def createProfileSearchInHashtag(profileIDList: list[RequestBodyWithClicker],
                                        finderID: UUID,
                                        hashtag: str):
     """adds to the database a user with an ID who was looking for
