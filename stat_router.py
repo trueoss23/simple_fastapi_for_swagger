@@ -67,8 +67,7 @@ Curr = StatPoint(profileReach=100,
            profileSubscribers=10,
            profileUnsubscribers=30,
 		   allFollowsLink=100,
-           allSearch=200,
-)
+           allSearch=200,)
 
 Prev = StatPoint(profileReach=0,
            profileEngagement=12.4,
@@ -225,7 +224,7 @@ async def read_searchedInHashtag(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd0
 async def createFollowsLinkFromPost(profileID: UUID, visitorID: UUID):
     """adds to the database a user with an visitorID(UUID format)
     who followed the link from the post of the user with an profileID(UUID format)"""
-    Curr.followsLinkFromPost += 1
+    Curr.allFollowsLink += 1
     return
 
 
@@ -233,7 +232,7 @@ async def createFollowsLinkFromPost(profileID: UUID, visitorID: UUID):
 async def createFollowsLinkFromProfile(profileID: UUID, visitorID: UUID):
     """adds to the database a user with an visitorID(UUID format)
     who followed the link from the profile of the user with an profileID(UUID format)"""
-    Curr.followsLinkFromProfile += 1
+    Curr.allFollowsLink += 1
     return
 
 
@@ -242,7 +241,7 @@ async def createClickFromSubscribers(profileID: UUID, clickerID: UUID):
     """adds to the database a clickerID(UUID format) who clicked on a profile
     with an profileID(UUID format) in their subscribers
     """
-    Curr.clicksFromSubscribers += 1
+    Curr.allSearch += 1
     return
 
 
@@ -251,7 +250,7 @@ async def createClickFromSubscriptions(profileID: UUID, clickerID: UUID):
     """adds to the database a clickerID(UUID format) who clicked on a profile
     with an profileID(UUID format) in their Subscruptions
     """
-    Curr.clicksFromSubscriptions += 1
+    Curr.allSearch += 1
     return
 
 
@@ -260,7 +259,7 @@ async def createClickFromKvad(profileID: UUID, clickerID: UUID):
     """adds to the database a clickerID(UUID format) who clicked on a profile
     with an profileID(UUID format) in kvad
     """
-    Curr.clicksFromKvad += 1
+    Curr.allSearch += 1
     return
 
 
@@ -269,7 +268,7 @@ async def createProfileSearch(profileIDList: list[RequestBodyForSearch]):
     """adds to the database a user with an ID who was looking for
     a list of profiles with an ID(UUID format) in searchValue
     """
-    Curr.searched += 1
+    Curr.allSearch += 1
     return
 
 
@@ -278,5 +277,5 @@ async def createProfileSearchInHashtag(profileIDList: list[RequestBodyWithClicke
     """adds to the database a user with an ID who was looking for
     a list of profiles with an ID(UUID format) in hashtag
     """
-    Curr.searchedInHashtag += 1
+    Curr.allSearch += 1
     return
