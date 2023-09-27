@@ -38,13 +38,8 @@ class StatPoint(BaseModel):
     profileViews: int
     profileSubscribers: int
     profileUnsubscribers: int
-    followsLinkFromPost: int
-    followsLinkFromProfile: int
-    clicksFromSubscribers: int
-    clicksFromSubscriptions: int
-    clicksFromKvad: int = None
-    searchedInHashtag: int
-    searched: int
+    allFollowsLink: int
+    allSearch: int
 
     class Config:
         json_schema_extra = {
@@ -54,13 +49,8 @@ class StatPoint(BaseModel):
                 "profileViews": 2,
                 "profileSubscribers": 1,
                 "profileUnsubscribers": 3,
-                "followsLinkFromPost": 4,
-                "followsLinkFromProfile": 0,
-                "clicksFromSubscribers": 0,
-                "clicksFromSubscriptions": 0,
-                "clicksFromKvad": 1,
-                "searchedInHashtag": 700,
-                "searched": 11,
+                "allFollowsLink": 100,
+                "allSearch": 20,
             }
         }
 
@@ -76,13 +66,9 @@ Curr = StatPoint(profileReach=100,
            profileViews=400,
            profileSubscribers=10,
            profileUnsubscribers=30,
-           followsLinkFromPost=10,
-           followsLinkFromProfile=100,
-           clicksFromSubscribers=2,
-           clicksFromSubscriptions=3,
-           clicksFromKvad=1,
-           searchedInHashtag=3,
-           searched=0,)
+		   allFollowsLink=100,
+           allSearch=200,
+)
 
 Prev = StatPoint(profileReach=0,
            profileEngagement=12.4,
@@ -90,13 +76,8 @@ Prev = StatPoint(profileReach=0,
            profileViews=400,
            profileSubscribers=10,
            profileUnsubscribers=0,
-           followsLinkFromPost=0,
-           followsLinkFromProfile=100,
-           clicksFromSubscribers=20,
-           clicksFromSubscriptions=33,
-           clicksFromKvad=0,
-           searchedInHashtag=31,
-           searched=100,)
+		   allFollowsLink=10,
+           allSearch=230,)
 
 
 r = APIRouter()
