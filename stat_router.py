@@ -41,7 +41,7 @@ class StatPoint(BaseModel):
     followsLinkFromPost: int
     followsLinkFromProfile: int
     clicksFromSubscribers: int
-    clikcsFromSubscriptions: int
+    clicksFromSubscriptions: int
     clicksFromKvad: int = None
     searchedInHashtag: int
     searched: int
@@ -57,7 +57,7 @@ class StatPoint(BaseModel):
                 "followsLinkFromPost": 4,
                 "followsLinkFromProfile": 0,
                 "clicksFromSubscribers": 0,
-                "clikcsFromSubscriptions": 0,
+                "clicksFromSubscriptions": 0,
                 "clicksFromKvad": 1,
                 "searchedInHashtag": 700,
                 "searched": 11,
@@ -79,7 +79,7 @@ Curr = StatPoint(profileReach=100,
            followsLinkFromPost=10,
            followsLinkFromProfile=100,
            clicksFromSubscribers=2,
-           clikcsFromSubscriptions=3,
+           clicksFromSubscriptions=3,
            clicksFromKvad=1,
            searchedInHashtag=3,
            searched=0,)
@@ -93,7 +93,7 @@ Prev = StatPoint(profileReach=0,
            followsLinkFromPost=0,
            followsLinkFromProfile=100,
            clicksFromSubscribers=20,
-           clikcsFromSubscriptions=33,
+           clicksFromSubscriptions=33,
            clicksFromKvad=0,
            searchedInHashtag=31,
            searched=100,)
@@ -206,8 +206,8 @@ async def readClickFromSubscribers(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcd
 async def readClickFromSubscriptions(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                                      start: datetime = datetime.utcnow(),
                                      end: datetime = datetime.utcnow()):
-    return {'CurrClicksSubscriptions': Curr.clikcsFromSubscriptions,
-            'PrevClicksSubscriptions': Prev.clikcsFromSubscriptions}
+    return {'CurrClicksSubscriptions': Curr.clicksFromSubscriptions,
+            'PrevClicksSubscriptions': Prev.clicksFromSubscriptions}
 
 
 @r.get('/profile/{userID}/clicksFromKvad')
@@ -270,7 +270,7 @@ async def createClickFromSubscriptions(profileID: UUID, clickerID: UUID):
     """adds to the database a clickerID(UUID format) who clicked on a profile
     with an profileID(UUID format) in their Subscruptions
     """
-    Curr.clikcsFromSubscriptions += 1
+    Curr.clicksFromSubscriptions += 1
     return
 
 
@@ -284,9 +284,7 @@ async def createClickFromKvad(profileID: UUID, clickerID: UUID):
 
 
 @r.post('/profile/search')
-async def createProfileSearch(profileIDList: list[RequestBodyForSearch],
-                              finderID: UUID,
-                              searchValue: str):
+async def createProfileSearch(profileIDList: list[RequestBodyForSearch]):
     """adds to the database a user with an ID who was looking for
     a list of profiles with an ID(UUID format) in searchValue
     """
@@ -295,9 +293,7 @@ async def createProfileSearch(profileIDList: list[RequestBodyForSearch],
 
 
 @r.post('/profile/searchInHashtag')
-async def createProfileSearchInHashtag(profileIDList: list[RequestBodyWithClicker],
-                                       finderID: UUID,
-                                       hashtag: str):
+async def createProfileSearchInHashtag(profileIDList: list[RequestBodyWithClicker]):
     """adds to the database a user with an ID who was looking for
     a list of profiles with an ID(UUID format) in hashtag
     """
