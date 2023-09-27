@@ -273,7 +273,7 @@ async def createProfileSearch(profileIDList: list[RequestBodyForSearch]):
 
 
 @r.post('/profile/searchInHashtag')
-async def createProfileSearchInHashtag(profileIDList: list[RequestBodyWithClicker]):
+async def createProfileSearchInHashtag(profileIDList: list[RequestBodyForSearch]):
     """adds to the database a user with an ID who was looking for
     a list of profiles with an ID(UUID format) in hashtag
     """
