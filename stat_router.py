@@ -182,7 +182,7 @@ async def readClickFromSubscribers(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcd
             'PrevClicksSubscribers': Prev.clicksFromSubscribers}
 
 
-@r.get('/profile/{userID}/profileClicksFromSubscriptions')
+@r.get('/profile/{userID}/clicksFromSubscriptions')
 async def readClickFromSubscriptions(id: UUID = '006e40e7-8749-44d1-90bf-1f9027dcdd02',
                                      start: datetime = datetime.utcnow(),
                                      end: datetime = datetime.utcnow()):
